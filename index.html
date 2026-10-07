@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AhmadUllah — Find work, hire skilled freelancers</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <div class="nav-row">
+    <a href="index.html" class="brand"><span class="brand-mark">AH</span>AhmadUllah</a>
+    <nav class="nav-menu" aria-label="Primary">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="jobs.html">Find Jobs</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-proposals.html">My Proposals</a>
+      <a href="orders.html">Orders &amp; Projects</a>
+      <a href="messages.html">Messages</a>
+      <a href="post-job.html">Post a Job</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="favorites.html" class="nav-icon-btn" aria-label="Favorites">❤️</a>
+      <a href="messages.html?tab=notifications" class="nav-icon-btn" aria-label="Notifications">🔔<span class="notif-dot" aria-hidden="true"></span></a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <p class="eyebrow-tag">Frontend-only prototype</p>
+        <h1>Where good work finds good people.</h1>
+        <p class="hero-lede">AhmadUllah connects clients with skilled freelancers across development, design, writing, and marketing — post a job in minutes, or find your next contract today.</p>
+        <div class="hero-actions">
+          <a href="jobs.html" class="btn btn-primary">Find Jobs</a>
+          <a href="post-job.html" class="btn btn-secondary">Post a Job</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><span class="num">15+</span><span class="label">Open jobs</span></div>
+          <div class="hero-stat"><span class="num">9</span><span class="label">Categories</span></div>
+          <div class="hero-stat"><span class="num">4.6</span><span class="label">Avg. client rating</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-visual-header">
+          <h4>Freshly posted</h4>
+          <span>Updated today</span>
+        </div>
+        <div id="hero-mini-jobs"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Browse by category</h2>
+          <p>Nine categories, from full builds to quick one-off tasks.</p>
+        </div>
+        <a href="jobs.html" class="btn btn-ghost">View all jobs →</a>
+      </div>
+      <div class="category-grid" id="category-grid"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span>© <span data-current-year></span> AhmadUllah. A frontend prototype — no data leaves your browser.</span>
+    <span class="footer-right">
+      <a href="login.html">Login</a>
+      <a href="create-service.html">Create Service</a>
+      <a href="favorites.html">Favorites</a>
+    </span>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+  function renderHeroJobs() {
+    const jobs = DataStore.getAllJobs().slice(0, 4);
+    const wrap = document.getElementById('hero-mini-jobs');
+    wrap.innerHTML = jobs.map(job => `
+      <a class="mini-job-row" href="job-details.html?id=${encodeURIComponent(job.id)}">
+        <div>
+          <div class="mini-job-title">${escapeHtml(job.title)}</div>
+          <div class="mini-job-meta">${escapeHtml(job.category)} · ${formatRelativeDate(job.postedDate)}</div>
+        </div>
+        <div class="mini-job-budget">${formatBudget(job)}</div>
+      </a>
+    `).join('');
+  }
+
+  function renderCategories() {
+    const jobs = DataStore.getAllJobs();
+    const counts = {};
+    jobs.forEach(j => { counts[j.category] = (counts[j.category] || 0) + 1; });
+    const grid = document.getElementById('category-grid');
+    grid.innerHTML = Object.keys(CATEGORY_COLORS).map(cat => `
+      <a class="category-card" href="jobs.html?category=${encodeURIComponent(cat)}">
+        <span class="category-swatch" style="background:${categoryColor(cat)}"></span>
+        <div>
+          <h4>${cat}</h4>
+          <p class="count">${counts[cat] || 0} open job${(counts[cat] || 0) === 1 ? '' : 's'}</p>
+        </div>
+      </a>
+    `).join('');
+  }
+
+  renderHeroJobs();
+  renderCategories();
+</script>
+</body>
+</html>

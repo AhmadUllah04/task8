@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Orders &amp; Projects — AhmadUllah</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <div class="nav-row">
+    <a href="index.html" class="brand"><span class="brand-mark">AH</span>AhmadUllah</a>
+    <nav class="nav-menu" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="jobs.html">Find Jobs</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-proposals.html">My Proposals</a>
+      <a href="orders.html" aria-current="page">Orders &amp; Projects</a>
+      <a href="messages.html">Messages</a>
+      <a href="post-job.html">Post a Job</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="favorites.html" class="nav-icon-btn" aria-label="Favorites">❤️</a>
+      <a href="messages.html?tab=notifications" class="nav-icon-btn" aria-label="Notifications">🔔<span class="notif-dot" aria-hidden="true"></span></a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="container">
+
+    <div class="page-head">
+      <div>
+        <p class="eyebrow">Dashboard</p>
+        <h1>My Orders &amp; Projects</h1>
+        <p class="page-lede">Track every order — from accepted proposal to final delivery — with live progress, milestones and statuses.</p>
+      </div>
+      <a href="post-job.html" class="btn btn-primary">＋ Post a Job</a>
+    </div>
+
+    <section class="stats-grid" aria-label="Project statistics">
+      <article class="stat-card">
+        <span class="stat-icon indigo" aria-hidden="true">📦</span>
+        <div><div class="stat-num" id="stat-total">0</div><div class="stat-label">Total Projects</div><div class="stat-sub">All time</div></div>
+      </article>
+      <article class="stat-card">
+        <span class="stat-icon blue" aria-hidden="true">⚡</span>
+        <div><div class="stat-num" id="stat-active">0</div><div class="stat-label">Active Projects</div><div class="stat-sub">In progress &amp; submitted</div></div>
+      </article>
+      <article class="stat-card">
+        <span class="stat-icon green" aria-hidden="true">✓</span>
+        <div><div class="stat-num" id="stat-completed">0</div><div class="stat-label">Completed</div><div class="stat-sub">Delivered &amp; approved</div></div>
+      </article>
+      <article class="stat-card">
+        <span class="stat-icon amber" aria-hidden="true">⏳</span>
+        <div><div class="stat-num" id="stat-pending">0</div><div class="stat-label">Pending</div><div class="stat-sub">Awaiting start</div></div>
+      </article>
+    </section>
+
+    <section class="toolbar" aria-label="Search and filters">
+      <div class="toolbar-row">
+        <div class="search-field">
+          <span class="icon" aria-hidden="true">🔍</span>
+          <label class="visually-hidden" for="project-search">Search projects</label>
+          <input type="search" id="project-search" placeholder="Search by project, client, or order ID…">
+        </div>
+        <div class="seg" id="lifecycle-seg" role="group" aria-label="Filter by stage">
+          <button type="button" class="seg-btn is-active" data-lifecycle="all" aria-pressed="true">All</button>
+          <button type="button" class="seg-btn" data-lifecycle="active" aria-pressed="false">Active</button>
+          <button type="button" class="seg-btn" data-lifecycle="completed" aria-pressed="false">Completed</button>
+        </div>
+        <div class="status-select-wrap">
+          <label class="visually-hidden" for="status-filter">Filter by status</label>
+          <select id="status-filter">
+            <option value="all">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="in-progress">In Progress</option>
+            <option value="submitted">Submitted</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div class="toolbar-footer">
+        <span class="result-count" id="result-count" aria-live="polite"></span>
+        <button type="button" class="btn btn-ghost btn-sm" id="clear-filters">Clear filters</button>
+      </div>
+    </section>
+
+    <section aria-label="Projects">
+      <div class="projects-grid" id="projects-grid"></div>
+      <div class="empty-state" id="empty-state" hidden>
+        <h2>No projects found</h2>
+        <p>Try a different search term or clear the active filters.</p>
+        <button type="button" class="btn btn-secondary" id="empty-clear">Clear filters</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span>© <span data-current-year></span> AhmadUllah — frontend prototype. No data leaves your browser.</span>
+    <div class="footer-right">
+      <button type="button" class="btn btn-ghost btn-sm" id="reset-demo">Reset demo data</button>
+    </div>
+  </div>
+</footer>
+
+<script src="orders-data.js"></script>
+<script src="app.js"></script>
+<script src="orders.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+/* ============ responsive.css ============ */
+@media (max-width: 1024px){
+  .category-grid{grid-template-columns:repeat(2,1fr)}
+  .filter-grid{grid-template-columns:repeat(2,1fr) !important}
+  .projects-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .details-layout,.proposal-layout,.details-grid{grid-template-columns:1fr}
+}
+@media (max-width: 860px){
+  .nav-toggle{display:inline-flex}
+  .nav-menu{position:absolute;top:64px;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--border);flex-direction:column;padding:var(--space-3) var(--space-5) var(--space-4);gap:4px;display:none;box-shadow:var(--shadow);z-index:90}
+  body.nav-open .nav-menu{display:flex}
+  .nav-menu a{padding:12px}
+  .hero-inner{grid-template-columns:1fr}
+  .job-grid{grid-template-columns:1fr}
+}
+@media (max-width: 640px){
+  .container,.nav-row{padding:0 var(--space-4)}
+  .hero{padding:var(--space-6) 0}
+  .hero-stats{gap:var(--space-5);flex-wrap:wrap}
+  .search-row{flex-direction:column}
+  .filter-grid{grid-template-columns:1fr !important}
+  .form-row-split{grid-template-columns:1fr}
+  .radio-card-group{flex-direction:column}
+  .proposal-card{flex-direction:column}
+  .proposal-side{align-items:flex-start}
+  .stats-grid,.projects-grid{grid-template-columns:1fr}
+  .section-head,.toolbar-footer,.page-head{flex-direction:column;align-items:flex-start}
+  .footer-row{flex-direction:column;align-items:flex-start}
+  .ph-budget{text-align:left}
+  .hero h1{font-size:28px}
+  .page-head h1{font-size:24px}
+}

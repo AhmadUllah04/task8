@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Jobs — AhmadUllah</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <div class="nav-row">
+    <a href="index.html" class="brand"><span class="brand-mark">AH</span>AhmadUllah</a>
+    <nav class="nav-menu" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="jobs.html" aria-current="page">Find Jobs</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-proposals.html">My Proposals</a>
+      <a href="orders.html">Orders &amp; Projects</a>
+      <a href="messages.html">Messages</a>
+      <a href="post-job.html">Post a Job</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="favorites.html" class="nav-icon-btn" aria-label="Favorites">❤️</a>
+      <a href="messages.html?tab=notifications" class="nav-icon-btn" aria-label="Notifications">🔔<span class="notif-dot" aria-hidden="true"></span></a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="section" style="padding-top: var(--space-6);">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1 style="margin-bottom:4px;">Find Jobs</h1>
+        <p>Browse open contracts across every category on Guildwork.</p>
+      </div>
+    </div>
+
+    <form class="toolbar" id="filter-form">
+      <div class="search-row">
+        <div class="search-field">
+          <span class="icon" aria-hidden="true">🔍</span>
+          <label for="search-input" class="visually-hidden">Search jobs</label>
+          <input type="search" id="search-input" placeholder="Search by title, skill, or keyword…">
+        </div>
+        <div style="min-width:200px;">
+          <label for="sort-select" class="visually-hidden">Sort by</label>
+          <select id="sort-select">
+            <option value="newest">Sort: Newest</option>
+            <option value="oldest">Sort: Oldest</option>
+            <option value="budget-high">Sort: Highest Budget</option>
+            <option value="budget-low">Sort: Lowest Budget</option>
+            <option value="most-proposals">Sort: Most Proposals</option>
+            <option value="fewest-proposals">Sort: Fewest Proposals</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-grid">
+        <div>
+          <label for="category-select" class="field-label">Category</label>
+          <select id="category-select"><option value="">All categories</option></select>
+        </div>
+        <div>
+          <label for="budget-select" class="field-label">Budget</label>
+          <select id="budget-select">
+            <option value="">Any budget</option>
+            <option value="0-300">Under $300</option>
+            <option value="300-800">$300 – $800</option>
+            <option value="800-1500">$800 – $1,500</option>
+            <option value="1500-999999">$1,500+</option>
+          </select>
+        </div>
+        <div>
+          <label for="skill-select" class="field-label">Skills</label>
+          <select id="skill-select"><option value="">All skills</option></select>
+        </div>
+        <div>
+          <label for="experience-select" class="field-label">Experience level</label>
+          <select id="experience-select">
+            <option value="">Any level</option>
+            <option>Entry Level</option>
+            <option>Intermediate</option>
+            <option>Expert</option>
+          </select>
+        </div>
+        <div>
+          <label for="jobtype-select" class="field-label">Job type</label>
+          <select id="jobtype-select">
+            <option value="">Any type</option>
+            <option>Fixed Price</option>
+            <option>Hourly</option>
+          </select>
+        </div>
+        <div>
+          <label for="posted-select" class="field-label">Posted</label>
+          <select id="posted-select">
+            <option value="">Any time</option>
+            <option value="1">Last 24 hours</option>
+            <option value="3">Last 3 days</option>
+            <option value="7">Last week</option>
+            <option value="30">Last month</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="toolbar-footer">
+        <div class="active-filters" id="active-filters" aria-live="polite"></div>
+        <div style="display:flex; align-items:center; gap: var(--space-4);">
+          <span class="result-count" id="result-count" aria-live="polite"></span>
+          <button type="button" class="btn btn-ghost btn-sm" id="clear-filters">Clear filters</button>
+        </div>
+      </div>
+    </form>
+
+    <div id="job-list-region">
+      <div class="job-grid" id="job-grid"></div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span>© <span data-current-year></span> AhmadUllah. A frontend prototype — no data leaves your browser.</span>
+    <button class="btn btn-ghost btn-sm" id="simulate-error-btn" type="button">Simulate loading error</button>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script src="jobs.js"></script>
+</body>
+</html>

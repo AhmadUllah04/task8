@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Messages &amp; Activity — AhmadUllah</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="messages.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <div class="nav-row">
+    <a href="index.html" class="brand"><span class="brand-mark">AH</span>AhmadUllah</a>
+    <nav class="nav-menu" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="jobs.html">Find Jobs</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-proposals.html">My Proposals</a>
+      <a href="orders.html">Orders &amp; Projects</a>
+      <a href="messages.html" aria-current="page">Messages</a>
+      <a href="post-job.html">Post a Job</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="favorites.html" class="nav-icon-btn" aria-label="Favorites">❤️</a>
+      <a href="messages.html?tab=notifications" class="nav-icon-btn" aria-label="Notifications">🔔<span class="notif-dot" aria-hidden="true"></span></a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="section page-messages">
+  <div class="container">
+
+    <div class="page-head">
+      <div>
+        <h1>Messages &amp; Activity</h1>
+        <p class="page-lede">Chat with clients, track notifications, and manage your reviews — all in one place.</p>
+      </div>
+    </div>
+
+    <div class="tabs-row" id="activity-tabs" role="tablist" aria-label="Activity sections">
+      <button class="tab-btn is-active" id="tab-messages" type="button" role="tab"
+              aria-selected="true" aria-controls="panel-messages" data-tab="messages">
+        💬 Messages <span class="tab-badge" id="tab-msg-badge" hidden></span>
+      </button>
+      <button class="tab-btn" id="tab-notifications" type="button" role="tab" tabindex="-1"
+              aria-selected="false" aria-controls="panel-notifications" data-tab="notifications">
+        🔔 Notifications <span class="tab-badge tab-badge-accent" id="tab-notif-badge" hidden></span>
+      </button>
+      <button class="tab-btn" id="tab-reviews" type="button" role="tab" tabindex="-1"
+              aria-selected="false" aria-controls="panel-reviews" data-tab="reviews">
+        ⭐ Reviews
+      </button>
+    </div>
+
+    <!-- ============ MESSAGES ============ -->
+    <section class="tab-panel" id="panel-messages" role="tabpanel" aria-labelledby="tab-messages" tabindex="0">
+      <div class="msgs-layout" id="msgs-layout">
+
+        <aside class="card conv-panel" aria-label="Conversations">
+          <div class="conv-search">
+            <span class="conv-search-icon" aria-hidden="true">🔍</span>
+            <label class="visually-hidden" for="conv-search">Search conversations</label>
+            <input type="search" id="conv-search" placeholder="Search conversations…">
+          </div>
+          <ul class="conv-list" id="conversation-list"></ul>
+          <p class="conv-empty" id="conv-empty" hidden>No conversations match your search.</p>
+        </aside>
+
+        <section class="card chat-panel" aria-label="Chat window">
+          <div class="chat-empty" id="chat-empty">
+            <span class="chat-empty-icon" aria-hidden="true">💬</span>
+            <h2>Select a conversation</h2>
+            <p>Choose a client or freelancer from the list to start chatting about your project.</p>
+          </div>
+
+          <div class="chat-active" id="chat-active" hidden>
+            <div class="chat-head">
+              <button type="button" class="chat-back" id="chat-back" aria-label="Back to conversation list">←</button>
+              <span class="avatar avatar-slate" id="chat-avatar" aria-hidden="true"></span>
+              <div class="chat-head-info">
+                <h2 id="chat-name">Name</h2>
+                <p class="chat-status" id="chat-status">Online</p>
+              </div>
+              <span class="chip chip-muted" id="chat-project"></span>
+            </div>
+            <div class="chat-body" id="chat-messages" role="log" aria-live="polite" aria-label="Message history"></div>
+            <form class="chat-form" id="chat-form">
+              <label class="visually-hidden" for="chat-input">Type a message</label>
+              <input type="text" id="chat-input" placeholder="Type a message…" autocomplete="off" maxlength="500">
+              <button type="submit" class="btn btn-primary chat-send">Send</button>
+            </form>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+    <!-- ============ NOTIFICATIONS ============ -->
+    <section class="tab-panel" id="panel-notifications" role="tabpanel" aria-labelledby="tab-notifications" tabindex="0" hidden>
+      <div class="notif-toolbar">
+        <div>
+          <h2>Notifications</h2>
+          <p id="notif-summary" aria-live="polite">Loading notifications…</p>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" id="mark-all-btn">Mark all as read</button>
+      </div>
+      <ul class="notif-list card" id="notification-list"></ul>
+    </section>
+
+    <!-- ============ REVIEWS ============ -->
+    <section class="tab-panel" id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews" tabindex="0" hidden>
+      <div class="reviews-layout">
+
+        <section class="card review-form-card" aria-labelledby="review-form-title">
+          <h2 id="review-form-title">Rate Your Experience</h2>
+          <p class="review-form-lede">Share feedback about a recently completed project.</p>
+
+          <form id="review-form" novalidate>
+            <div class="form-row">
+              <label class="field-label" for="review-project">Project <span class="req">*</span></label>
+              <select id="review-project" aria-describedby="project-error">
+                <option value="">Select a completed project…</option>
+              </select>
+              <p class="field-error" id="project-error" role="alert" hidden>Please select a project.</p>
+            </div>
+
+            <fieldset class="star-field">
+              <legend class="field-label">Your rating <span class="req">*</span></legend>
+              <div class="stars" id="star-group">
+                <span class="star-option">
+                  <input type="radio" name="rating" id="rate-1" value="1" aria-describedby="rating-error">
+                  <label for="rate-1"><span class="star-glyph" aria-hidden="true">★</span><span class="visually-hidden">1 star</span></label>
+                </span>
+                <span class="star-option">
+                  <input type="radio" name="rating" id="rate-2" value="2" aria-describedby="rating-error">
+                  <label for="rate-2"><span class="star-glyph" aria-hidden="true">★</span><span class="visually-hidden">2 stars</span></label>
+                </span>
+                <span class="star-option">
+                  <input type="radio" name="rating" id="rate-3" value="3" aria-describedby="rating-error">
+                  <label for="rate-3"><span class="star-glyph" aria-hidden="true">★</span><span class="visually-hidden">3 stars</span></label>
+                </span>
+                <span class="star-option">
+                  <input type="radio" name="rating" id="rate-4" value="4" aria-describedby="rating-error">
+                  <label for="rate-4"><span class="star-glyph" aria-hidden="true">★</span><span class="visually-hidden">4 stars</span></label>
+                </span>
+                <span class="star-option">
+                  <input type="radio" name="rating" id="rate-5" value="5" aria-describedby="rating-error">
+                  <label for="rate-5"><span class="star-glyph" aria-hidden="true">★</span><span class="visually-hidden">5 stars</span></label>
+                </span>
+              </div>
+              <p class="rating-output" id="rating-output" aria-live="polite">No rating selected yet</p>
+              <p class="field-error" id="rating-error" role="alert" hidden>Please select a star rating.</p>
+            </fieldset>
+
+            <div class="form-row">
+              <label class="field-label" for="review-text">Your review <span class="req">*</span></label>
+              <textarea id="review-text" maxlength="600" aria-describedby="char-counter review-error"
+                        placeholder="Describe your experience working together…"></textarea>
+              <div class="char-counter" id="char-counter">0 / 600</div>
+              <p class="field-error" id="review-error" role="alert" hidden>Please write a short review (at least 10 characters).</p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Submit Review</button>
+          </form>
+        </section>
+
+        <section class="reviews-list-wrap" aria-label="Reviews">
+          <div class="reviews-summary card" id="reviews-summary"></div>
+          <div class="reviews-grid" id="reviews-grid"></div>
+        </section>
+
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span>© <span data-current-year></span> AhmadUllah. A frontend prototype — no data leaves your browser.</span>
+  </div>
+</footer>
+
+<div class="gw-toast-region" id="toast-region" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+<script src="messages.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create a Service — AhmadUllah</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="nav-row">
+    <a href="index.html" class="brand"><span class="brand-mark">AH</span>AhmadUllah</a>
+    <nav class="nav-menu" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="jobs.html">Find Jobs</a>
+      <a href="marketplace.html" aria-current="page">Marketplace</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-proposals.html">My Proposals</a>
+      <a href="orders.html">Orders &amp; Projects</a>
+      <a href="messages.html">Messages</a>
+      <a href="post-job.html">Post a Job</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="favorites.html" class="nav-icon-btn" aria-label="Favorites">❤️</a>
+      <a href="messages.html?tab=notifications" class="nav-icon-btn" aria-label="Notifications">🔔<span class="notif-dot" aria-hidden="true"></span></a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="section" style="padding-top: var(--space-6); max-width: 760px; margin: 0 auto;">
+  <div class="container" style="max-width:100%;">
+    <h1 style="margin-bottom:4px;">Create a Service</h1>
+    <p style="margin-bottom: var(--space-5);">List a gig so clients can order your services directly.</p>
+
+    <form class="form-card" id="service-form" novalidate>
+      <div class="form-row">
+        <label class="field-label" for="title">Service title <span class="req">*</span></label>
+        <input type="text" id="title" maxlength="80" placeholder="e.g. Full-Stack React Web App Build">
+        <div class="char-counter" id="title-counter">0 / 80</div>
+        <p class="field-error" id="title-error" hidden></p>
+      </div>
+      <div class="form-row">
+        <label class="field-label" for="category">Category <span class="req">*</span></label>
+        <select id="category">
+          <option value="">Select a category…</option>
+          <option>Web Development</option>
+          <option>Graphic Design</option>
+          <option>UI/UX Design</option>
+          <option>Mobile Development</option>
+          <option>Content Writing</option>
+          <option>Digital Marketing</option>
+          <option>SEO</option>
+          <option>WordPress</option>
+          <option>Data Entry</option>
+        </select>
+        <p class="field-error" id="category-error" hidden></p>
+      </div>
+      <div class="form-row">
+        <label class="field-label" for="description">Description <span class="req">*</span></label>
+        <textarea id="description" maxlength="800" style="min-height:120px;" placeholder="What will the client receive?"></textarea>
+        <div class="char-counter" id="desc-counter">0 / 800</div>
+        <p class="field-error" id="desc-error" hidden></p>
+      </div>
+      <div class="form-row form-row-split">
+        <div>
+          <label class="field-label" for="price">Starting price ($) <span class="req">*</span></label>
+          <input type="number" id="price" min="1" placeholder="e.g. 150">
+          <p class="field-error" id="price-error" hidden></p>
+        </div>
+        <div>
+          <label class="field-label" for="delivery">Delivery (days) <span class="req">*</span></label>
+          <input type="number" id="delivery" min="1" placeholder="e.g. 7">
+          <p class="field-error" id="delivery-error" hidden></p>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="field-label" for="exp">Experience level <span class="req">*</span></label>
+        <select id="exp">
+          <option value="">Select…</option>
+          <option>Entry Level</option>
+          <option>Intermediate</option>
+          <option>Expert</option>
+        </select>
+        <p class="field-error" id="exp-error" hidden></p>
+      </div>
+      <div class="form-actions">
+        <a href="marketplace.html" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-block">Publish Service</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span>© <span data-current-year></span> AhmadUllah. A frontend prototype — no data leaves your browser.</span>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script src="validation.js"></script>
+<script>
+(function(){
+  const title = document.getElementById('title');
+  const desc = document.getElementById('description');
+  title.addEventListener('input', () => document.getElementById('title-counter').textContent = title.value.length + ' / 80');
+  desc.addEventListener('input', () => document.getElementById('desc-counter').textContent = desc.value.length + ' / 800');
+
+  document.getElementById('service-form').addEventListener('submit', e => {
+    e.preventDefault();
+    let ok = true;
+    const t = title.value.trim(), d = desc.value.trim();
+    const cat = document.getElementById('category').value;
+    const price = document.getElementById('price').value;
+    const del = document.getElementById('delivery').value;
+    const exp = document.getElementById('exp').value;
+    if (!V.minLen(t, 10)){ showFieldError('title-error','Title must be at least 10 characters.'); ok=false; } else clearFieldError('title-error');
+    if (!V.selected(cat)){ showFieldError('category-error','Select a category.'); ok=false; } else clearFieldError('category-error');
+    if (!V.minLen(d, 40)){ showFieldError('desc-error','Description must be at least 40 characters.'); ok=false; } else clearFieldError('desc-error');
+    if (!V.isNumber(price)){ showFieldError('price-error','Enter a valid price.'); ok=false; } else clearFieldError('price-error');
+    if (!V.isNumber(del)){ showFieldError('delivery-error','Enter delivery days.'); ok=false; } else clearFieldError('delivery-error');
+    if (!V.selected(exp)){ showFieldError('exp-error','Select experience level.'); ok=false; } else clearFieldError('exp-error');
+    if (!ok) return;
+
+    const custom = DataStore._read(DataStore.SERVICES_KEY, []);
+    custom.unshift({
+      id: 'srv-' + Date.now(),
+      title: t, category: cat, price: Number(price), rating: 5.0, reviewsCount: 0,
+      deliveryDays: Number(del), expLevel: exp, freelancerName: 'AhmadUllah',
+      freelancerAvatar: 'AH', image: '⚡', description: d
+    });
+    DataStore._write(DataStore.SERVICES_KEY, custom);
+    showToast('Service published successfully!');
+    setTimeout(() => location.href = 'marketplace.html', 1000);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Dashboard &amp; Statistics — AhmadUllah</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <div class="nav-row">
+    <a href="index.html" class="brand"><span class="brand-mark">AH</span>AhmadUllah</a>
+    <nav class="nav-menu" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="jobs.html">Find Jobs</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="dashboard.html" aria-current="page">Dashboard</a>
+      <a href="my-proposals.html">My Proposals</a>
+      <a href="orders.html">Orders &amp; Projects</a>
+      <a href="messages.html">Messages</a>
+      <a href="post-job.html">Post a Job</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="favorites.html" class="nav-icon-btn" aria-label="Favorites">❤️</a>
+      <a href="messages.html?tab=notifications" class="nav-icon-btn" aria-label="Notifications">🔔<span class="notif-dot" aria-hidden="true"></span></a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="section" style="padding-top: var(--space-6);">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Overview of activity, active orders, and overall marketplace performance metrics.</p>
+      </div>
+      <div>
+        <!-- Switch between Freelancer and Client Dashboard -->
+        <select id="role-switcher" style="padding: 0.5rem 1rem; font-weight:600;">
+          <option value="freelancer">Role: Freelancer Dashboard</option>
+          <option value="client">Role: Client Dashboard</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Marketplace Global Statistics -->
+    <h3 style="margin-bottom: 1rem;">Marketplace Statistics</h3>
+    <div class="stats-grid" id="stats-summary"></div>
+
+    <!-- Dynamic Role View -->
+    <div id="role-view"></div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span>© <span data-current-year></span> AhmadUllah. Marketplace Dashboard.</span>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  const statsWrap = document.getElementById('stats-summary');
+  const roleWrap = document.getElementById('role-view');
+  const roleSelect = document.getElementById('role-switcher');
+
+  function renderStats() {
+    const s = DataStore.getStats();
+    statsWrap.innerHTML = `
+      <article class="stat-card"><span class="stat-icon indigo" aria-hidden="true">💰</span><div><div class="stat-num">$${s.totalEarnings.toLocaleString()}</div><div class="stat-label">Total Earnings</div><div class="stat-sub">All time value</div></div></article>
+      <article class="stat-card"><span class="stat-icon blue" aria-hidden="true">⚡</span><div><div class="stat-num">${s.activeProjects}</div><div class="stat-label">Active Projects</div><div class="stat-sub">In progress</div></div></article>
+      <article class="stat-card"><span class="stat-icon green" aria-hidden="true">📝</span><div><div class="stat-num">${s.totalProposals}</div><div class="stat-label">Proposals</div><div class="stat-sub">Submitted</div></div></article>
+      <article class="stat-card"><span class="stat-icon amber" aria-hidden="true">💼</span><div><div class="stat-num">${s.totalJobs}</div><div class="stat-label">Available Jobs</div><div class="stat-sub">Open contracts</div></div></article>
+    `;
+  }
+
+  function renderRoleView(role) {
+    if (role === 'freelancer') {
+      const proposals = DataStore.getProposals();
+      roleWrap.innerHTML = `
+        <div style="display:grid; gap:1.5rem;">
+          <section class="card block">
+            <h2>My Active Services (2)</h2>
+            <p>1. Full-Stack React & Node Web Application Build ($450)</p>
+            <p>2. Cross-Platform Flutter Mobile App Development ($600)</p>
+          </section>
+
+          <section class="card block">
+            <h2>Active Proposals &amp; Orders (${proposals.length})</h2>
+            <div class="similar-list">
+              ${proposals.slice(0, 3).map(p => `
+                <div class="similar-item">
+                  <div>
+                    <strong>${escapeHtml(p.jobTitle)}</strong>                     <div style="font-size:0.85rem; color:#64748b;">Bid: $${p.bid} · Status: <b>${p.status}</b></div>
+                  </div>
+                  <a href="my-proposals.html" class="btn btn-ghost btn-sm">View</a>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        </div>`;
+    } else {
+      const jobs = DataStore.getAllJobs().slice(0, 3);
+      roleWrap.innerHTML = `
+        <div style="display:grid; gap:1.5rem;">
+          <section class="card block">
+            <h2>My Posted Jobs (${jobs.length})</h2>
+            <div class="similar-list">
+              ${jobs.map(j => `
+                <div class="similar-item">
+                  <div>
+                    <strong>${escapeHtml(j.title)}</strong>
+                    <div style="font-size:0.85rem; color:#64748b;">${j.proposals} Proposals Received · ${j.budgetType}</div>
+                  </div>
+                  <a href="job-details.html?id=${j.id}" class="btn btn-ghost btn-sm">Manage Job</a>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+
+          <section class="card block">
+            <h2>Active Client Projects</h2>
+            <p>• E-commerce Website Redesign — <i>In Progress (Sarah Mitchell)</i></p>
+            <p>• Logo Design for Coffee Brand — <i>Reviewing Files (David Chen)</i></p>
+          </section>
+        </div>`;
+    }
+  }
+
+  roleSelect.addEventListener('change', (e) => renderRoleView(e.target.value));
+
+  renderStats();
+  renderRoleView('freelancer');
+})();
+</script>
+</body>
+</html>

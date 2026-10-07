@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Favorites — AhmadUllah</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <div class="nav-row">
+    <a href="index.html" class="brand"><span class="brand-mark">AH</span>AhmadUllah</a>
+    <nav class="nav-menu" aria-label="Primary">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="jobs.html">Find Jobs</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-proposals.html">My Proposals</a>
+      <a href="orders.html">Orders &amp; Projects</a>
+      <a href="messages.html">Messages</a>
+      <a href="post-job.html">Post a Job</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="favorites.html" class="nav-icon-btn" aria-label="Favorites">❤️</a>
+      <a href="messages.html?tab=notifications" class="nav-icon-btn" aria-label="Notifications">🔔<span class="notif-dot" aria-hidden="true"></span></a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="section" style="padding-top: var(--space-6);">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>My Favorites / Saved Items</h1>
+        <p>Bookmarked services and jobs saved for quick reference.</p>
+      </div>
+    </div>
+
+    <div id="favorites-grid" class="job-grid"></div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span>© <span data-current-year></span> AhmadUllah. Saved Items.</span>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  const grid = document.getElementById('favorites-grid');
+
+  function renderFavs() {
+    const favIds = DataStore.getFavorites();
+    const services = DataStore.getAllServices().filter(s => favIds.includes(s.id));
+    const jobs = DataStore.getAllJobs().filter(j => favIds.includes(j.id));
+    const all = [...services, ...jobs];
+
+    if (!all.length) {
+      grid.innerHTML = `
+        <div class="empty-state" style="grid-column: 1/-1;">
+          <h2>No favorites saved yet</h2>
+          <p>Browse the marketplace or find jobs to save services and projects for later.</p>
+          <a href="marketplace.html" class="btn btn-primary btn-sm" style="margin-top:1rem;">Explore Marketplace</a>
+        </div>`;
+      return;
+    }
+
+    grid.innerHTML = all.map(item => `
+      <article class="job-card">
+        <div class="job-card-top">
+          <span class="category-pill" style="background:${categoryColor(item.category)}1a;color:${categoryColor(item.category)}">${escapeHtml(item.category)}</span>
+          <button class="btn btn-ghost btn-sm" onclick="removeFav('${item.id}')">❌ Remove</button>
+        </div>
+        <h3 class="job-title">${escapeHtml(item.title)}</h3>
+        <p class="job-desc">${escapeHtml(item.description)}</p>
+      </article>
+    `).join('');
+  }
+
+  window.removeFav = function(id) {
+    DataStore.toggleFavorite(id);
+    showToast('Item removed from favorites');
+    renderFavs();
+  };
+
+  renderFavs();
+})();
+</script>
+</body>
+</html>

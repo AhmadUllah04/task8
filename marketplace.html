@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketplace Search & Services — AhmadUllah</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <div class="nav-row">
+    <a href="index.html" class="brand"><span class="brand-mark">AH</span>AhmadUllah</a>
+    <nav class="nav-menu" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="jobs.html">Find Jobs</a>
+      <a href="marketplace.html" aria-current="page">Marketplace</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-proposals.html">My Proposals</a>
+      <a href="orders.html">Orders &amp; Projects</a>
+      <a href="messages.html">Messages</a>
+      <a href="post-job.html">Post a Job</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="favorites.html" class="nav-icon-btn" aria-label="Favorites">❤️</a>
+      <a href="messages.html?tab=notifications" class="nav-icon-btn" aria-label="Notifications">🔔<span class="notif-dot" aria-hidden="true"></span></a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="section" style="padding-top: var(--space-6);">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h1>Marketplace Search &amp; Services</h1>
+        <p>Explore freelancer gig offerings or filter through active client job postings.</p>
+      </div>
+      <a href="create-service.html" class="btn btn-primary">＋ Create Service</a>
+    </div>
+
+    <!-- Search & Filters Toolbar -->
+    <form class="toolbar" id="mp-filter-form">
+      <div class="search-row">
+        <div class="search-field" style="flex:2;">
+          <span class="icon" aria-hidden="true">🔍</span>
+          <input type="search" id="mp-search" placeholder="Search services, jobs, freelancers, keywords...">
+        </div>
+        <div style="min-width:180px;">
+          <select id="mp-type">
+            <option value="services">Browse Services</option>
+            <option value="jobs">Browse Jobs</option>
+          </select>
+        </div>
+        <div style="min-width:180px;">
+          <select id="mp-sort">
+            <option value="popular">Most Popular</option>
+            <option value="rating">Highest Rating</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-grid" style="margin-top:1rem;">
+        <div>
+          <label for="mp-category" class="field-label">Category</label>
+          <select id="mp-category"><option value="">All Categories</option></select>
+        </div>
+        <div>
+          <label for="mp-price" class="field-label">Price Range</label>
+          <select id="mp-price">
+            <option value="">Any Price</option>
+            <option value="0-200">Under $200</option>
+            <option value="200-500">$200 – $500</option>
+            <option value="500-1000">$500 – $1,000</option>
+            <option value="1000-99999">$1,000+</option>
+          </select>
+        </div>
+        <div>
+          <label for="mp-rating" class="field-label">Min Rating</label>
+          <select id="mp-rating">
+            <option value="0">Any Rating</option>
+            <option value="4.5">4.5★ &amp; Above</option>
+            <option value="4.8">4.8★ &amp; Above</option>
+            <option value="5.0">5.0★ Only</option>
+          </select>
+        </div>
+        <div>
+          <label for="mp-exp" class="field-label">Experience Level</label>
+          <select id="mp-exp">
+            <option value="">Any Level</option>
+            <option value="Entry Level">Entry Level</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Expert">Expert</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="toolbar-footer" style="margin-top:1rem;">
+        <span id="mp-count" class="result-count">0 items found</span>
+        <button type="reset" id="mp-reset" class="btn btn-ghost btn-sm">Reset Filters</button>
+      </div>
+    </form>
+
+    <!-- Loading State Container -->
+    <div id="loading-state" class="job-grid" style="display:none; margin-top:2rem;">
+      <div class="skeleton-card"><div class="sk w60"></div><div class="sk w90"></div><div class="sk w40"></div></div>
+      <div class="skeleton-card"><div class="sk w60"></div><div class="sk w90"></div><div class="sk w40"></div></div>
+    </div>
+
+    <!-- Results Grid -->
+    <div id="mp-grid" class="job-grid" style="margin-top:2rem;"></div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span>© <span data-current-year></span> AhmadUllah. A frontend prototype.</span>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  const searchEl = document.getElementById('mp-search');
+  const typeEl = document.getElementById('mp-type');
+  const sortEl = document.getElementById('mp-sort');
+  const catEl = document.getElementById('mp-category');
+  const priceEl = document.getElementById('mp-price');
+  const ratingEl = document.getElementById('mp-rating');
+  const expEl = document.getElementById('mp-exp');
+  const grid = document.getElementById('mp-grid');
+  const countEl = document.getElementById('mp-count');
+  const loader = document.getElementById('loading-state');
+
+  // Populate categories
+  Object.keys(CATEGORY_COLORS).forEach(cat => {
+    catEl.insertAdjacentHTML('beforeend', `<option value="${cat}">${cat}</option>`);
+  });
+
+  function render() {
+    loader.style.display = 'grid';
+    grid.style.display = 'none';
+
+    setTimeout(() => {
+      loader.style.display = 'none';
+      grid.style.display = 'grid';
+
+      const query = searchEl.value.trim().toLowerCase();
+      const isService = typeEl.value === 'services';
+      let items = isService ? DataStore.getAllServices() : DataStore.getAllJobs();
+
+      // Filtering logic
+      if (query) {
+        items = items.filter(i => 
+          i.title.toLowerCase().includes(query) || 
+          (i.description && i.description.toLowerCase().includes(query)) ||
+          (i.freelancerName && i.freelancerName.toLowerCase().includes(query)) ||
+          (i.category && i.category.toLowerCase().includes(query))
+        );
+      }
+      if (catEl.value) items = items.filter(i => i.category === catEl.value);
+      if (expEl.value) items = items.filter(i => (i.expLevel || i.experience) === expEl.value);
+      if (ratingEl.value > 0) items = items.filter(i => (i.rating || (i.client && i.client.rating) || 0) >= parseFloat(ratingEl.value));
+      
+      if (priceEl.value) {
+        const [minP, maxP] = priceEl.value.split('-').map(Number);
+        items = items.filter(i => {
+          const val = isService ? i.price : i.max;
+          return val >= minP && val <= maxP;
+        });
+      }
+
+      // Sorting logic
+      if (sortEl.value === 'price-low') items.sort((a,b) => (isService ? a.price - b.price : a.min - b.min));
+      if (sortEl.value === 'price-high') items.sort((a,b) => (isService ? b.price - a.price : b.max - a.max));
+      if (sortEl.value === 'rating') items.sort((a,b) => ((b.rating || b.client?.rating || 0) - (a.rating || a.client?.rating || 0)));
+
+      countEl.textContent = `${items.length} ${isService ? 'service' : 'job'}(s) found`;
+
+      if (!items.length) {
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column: 1/-1;">
+            <h2>No results found</h2>
+            <p>Try clearing some filters or searching for another term.</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = items.map(item => {
+        const isFav = DataStore.isFavorite(item.id);
+        const col = categoryColor(item.category);
+
+        if (isService) {
+          return `
+            <article class="job-card">
+              <div class="job-card-top">
+                <span class="category-pill" style="background:${col}1a;color:${col}">${escapeHtml(item.category)}</span>
+                <button class="fav-btn btn btn-ghost btn-sm" onclick="toggleFav('${item.id}', this)">${isFav ? '❤️ Saved' : '🤍 Save'}</button>
+              </div>
+              <h3 class="job-title"><a href="#">${escapeHtml(item.title)}</a></h3>
+              <p class="job-desc">${escapeHtml(item.description)}</p>
+              <div class="job-card-footer">
+                <div>
+                  <span class="job-budget">$${item.price}</span>
+                  <span class="job-meta">⭐ ${item.rating} (${item.reviewsCount} reviews) · ${item.deliveryDays}d delivery</span>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="showToast('Order feature prototype link')">Order Now</button>
+              </div>
+            </article>`;
+        } else {
+          return `
+            <article class="job-card">
+              <div class="job-card-top">
+                <span class="category-pill" style="background:${col}1a;color:${col}">${escapeHtml(item.category)}</span>
+                <button class="fav-btn btn btn-ghost btn-sm" onclick="toggleFav('${item.id}', this)">${isFav ? '❤️ Saved' : '🤍 Save'}</button>
+              </div>
+              <h3 class="job-title"><a href="job-details.html?id=${item.id}">${escapeHtml(item.title)}</a></h3>
+              <p class="job-desc">${escapeHtml(item.description.slice(0, 120))}…</p>
+              <div class="job-card-footer">
+                <div>
+                  <span class="job-budget">${formatBudget(item)}</span>
+                  <span class="job-meta">⭐ ${item.client.rating} · ${item.proposals} proposals</span>
+                </div>
+                <a href="job-details.html?id=${item.id}" class="btn btn-primary btn-sm">View Job</a>
+              </div>
+            </article>`;
+        }
+      }).join('');
+    }, 200);
+  }
+
+  window.toggleFav = function(id, btn) {
+    const nowFav = DataStore.toggleFavorite(id);
+    btn.textContent = nowFav ? '❤️ Saved' : '🤍 Save';
+    showToast(nowFav ? 'Saved to favorites!' : 'Removed from favorites');
+  };
+
+  document.getElementById('mp-filter-form').addEventListener('input', render);
+  document.getElementById('mp-filter-form').addEventListener('reset', () => setTimeout(render, 50));
+  render();
+})();
+</script>
+</body>
+</html>
